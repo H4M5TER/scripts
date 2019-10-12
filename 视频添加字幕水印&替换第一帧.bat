@@ -51,5 +51,6 @@ echo %prefix%%suffix1% >> command.log
 echo %prefix%%suffix2% >> command.log
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
+del %subtitle%
 
 pause
