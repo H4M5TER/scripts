@@ -1,13 +1,18 @@
 @echo off
 cd /D "%~dp0"
+
 for %%F in (%*) do call :main %%F
+
 pause
 goto :eof
 
 :main
 setlocal
+
+set command=ffmpeg -i "%~1" -c copy "%~n1.mp4"
 echo on
-ffmpeg -i "%~1" -c copy "%~n1.mp4"
+%command%
 @echo off
-echo ffmpeg -i "%~1" -c copy "%~n1.mp4" > command.log
+echo %command% >> command.log
+
 endlocal
