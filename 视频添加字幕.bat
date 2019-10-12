@@ -1,29 +1,27 @@
 @echo off
+cd /D "%~dp0"
+
 if /I "%~x1"==".mp4" (
-goto video_first
+    set video=%~1
+    set subtitle=%~nx2
+    copy /Y "%~2" %subtitle%
 ) else (
-goto subtitle_first
+    set video=%~2
+    set subtitle=%~nx1
+    copy /Y "%~1" %subtitle%
 )
-:video_first
-cd /D "%~dp2"
+
+set prefix=ffmpeg -i "%video%" -vf "ass=%subtitle%" -c:v h264 -profile:v main -level 4.2 
+set suffix1=-pass 1 -b:v 6000K -bufsize 6000K -maxrate 24000K -an -f mp4 -y NUL
+set suffix2=-pass 2 -b:v 6000K -bufsize 6000K -maxrate 24000K -c:a copy "%~n1_subtitled.mp4"
+
 echo on
-%~dp0ffmpeg -i "%~1" -vf "subtitles=%~nx2" -codec:v h264 -profile:v main -level 4.2 -pass 1 -b:v 6000K -bufsize 6000K -maxrate 24000K -an -f mp4 -y NUL
-@echo ffmpeg -i "%~1" -vf "subtitles=%~nx2" -codec:v h264 -profile:v main -level 4.2 -pass 1 -b:v 6000K -bufsize 6000K -maxrate 24000K -an -f mp4 -y NUL >> command.log
-%~dp0ffmpeg -i "%~1" -vf "subtitles=%~nx2" -codec:v h264 -profile:v main -level 4.2 -pass 2 -b:v 6000K -bufsize 6000K -maxrate 24000K -codec:a copy "%~dp0%~n1_subtitled.mp4"
-@echo ffmpeg -i "%~1" -vf "subtitles=%~nx2" -codec:v h264 -profile:v main -level 4.2 -pass 2 -b:v 6000K -bufsize 6000K -maxrate 24000K -codec:a copy "%~dp0%~n1_subtitled.mp4" >> command.log
+%prefix%%suffix1%
+%prefix%%suffix2%
 @echo off
-goto end
-:subtitle_first
-cd /D "%~dp1"
-echo on
-%~dp0ffmpeg -i "%~2" -vf "subtitles=%~nx1" -codec:v h264 -profile:v main -level 4.2 -pass 1 -b:v 6000K -bufsize 6000K -maxrate 24000K -an -f mp4 -y NUL
-@echo ffmpeg -i "%~2" -vf "subtitles=%~nx1" -codec:v h264 -profile:v main -level 4.2 -pass 1 -b:v 6000K -bufsize 6000K -maxrate 24000K -an -f mp4 -y NUL >> command.log
-%~dp0ffmpeg -i "%~2" -vf "subtitles=%~nx1" -codec:v h264 -profile:v main -level 4.2 -pass 2 -b:v 6000K -bufsize 6000K -maxrate 24000K -codec:a copy "%~dp0%~n2_subtitled.mp4"
-@echo ffmpeg -i "%~2" -vf "subtitles=%~nx1" -codec:v h264 -profile:v main -level 4.2 -pass 2 -b:v 6000K -bufsize 6000K -maxrate 24000K -codec:a copy "%~dp0%~n2_subtitled.mp4" >> command.log
-@echo off
-goto end
-:end
+echo %prefix%%suffix1% >> command.log
+echo %prefix%%suffix2% >> command.log
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
+
 pause
-goto eof
