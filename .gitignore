@@ -1,6 +1,11 @@
+/lib
+/bin
+
+*.exe
+*.dll
+*.png
+*.7z
+
 *.mp4
 *.ass
-*.png
-*.exe
 *.log
-*.7z

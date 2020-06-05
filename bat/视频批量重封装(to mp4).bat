@@ -9,10 +9,10 @@ goto :eof
 :main
 setlocal
 
-set command=ffmpeg -i "%~1" -c copy "%~n1.mp4"
+set cmd=".\vendor\ffmpeg" -i "%~1" -c copy "%~n1.mp4"
 echo on
-%command%
+%cmd%
 @echo off
-echo %command% >> command.log
+echo %cmd% >>"cmd.log"
 
 endlocal

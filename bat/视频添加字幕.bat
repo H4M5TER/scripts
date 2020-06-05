@@ -11,7 +11,7 @@ if /I "%~x1"==".mp4" (
     copy /Y "%~1" %subtitle%
 )
 
-set prefix=ffmpeg -i "%video%" -vf "ass=%subtitle%" -c:v h264 -profile:v main -level 4.2 
+set prefix=".\vendor\ffmpeg" -i "%video%" -vf "ass=%subtitle%" -c:v h264 -profile:v main -level 4.2 
 set suffix1=-pass 1 -b:v 6000K -bufsize 6000K -maxrate 24000K -an -f mp4 -y NUL
 set suffix2=-pass 2 -b:v 6000K -bufsize 6000K -maxrate 24000K -c:a copy "%~n1_subtitled.mp4"
 
@@ -19,8 +19,8 @@ echo on
 %prefix%%suffix1%
 %prefix%%suffix2%
 @echo off
-echo %prefix%%suffix1% >> command.log
-echo %prefix%%suffix2% >> command.log
+echo %prefix%%suffix1% >>"cmd.log"
+echo %prefix%%suffix2% >>"cmd.log"
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
 del %subtitle%

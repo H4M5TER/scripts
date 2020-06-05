@@ -1,5 +1,5 @@
 大多数情况下 把视频拖到脚本上使用
-自带的FFmpeg版本为4.2.3-win64-static 可自行替换
+自带的FFmpeg版本为4.2.3-win64-shared 可自行替换
 
 仓库地址 https://github.com/h4m5ter/scripts/
 错误反馈 https://github.com/h4m5ter/scripts/issue/

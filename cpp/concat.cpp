@@ -5,12 +5,12 @@
 
 using namespace std;
 
-void LogAndDo(string command)
+void LogAndDo(string cmd)
 {
-    ofstream log("command.log", ios::out | ios::app);
-    cout << command << "\n" << endl;
-    log << command << endl;
-    system(command.c_str());
+    ofstream log("cmd.log", ios::out | ios::app);
+    cout << cmd << "\n" << endl;
+    log << cmd << endl;
+    system(cmd.c_str());
     log.close();
     return ;
 }
@@ -25,16 +25,16 @@ int main()
         cin.get();
         return 0;
     }        
-    string command = "ffmpeg -i \"concat:";
+    string cmd = "ffmpeg -i \"concat:";
     for (string name; getline(file, name, '.'); )
     {
         LogAndDo("ffmpeg -i " + name + ".mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts " + name + ".ts");
-        command = command + name + ".ts|";
+        cmd = cmd + name + ".ts|";
         getline(file, name);
     }
-    command.erase(command.end() - 1);
-    command = command + "\" -c copy -bsf:a aac_adtstoasc -f mp4 output.mp4";
-    LogAndDo(command);
+    cmd.erase(cmd.end() - 1);
+    cmd = cmd + "\" -c copy -bsf:a aac_adtstoasc -f mp4 output.mp4";
+    LogAndDo(cmd);
     cin.get();
     file.close();
     return 0;
